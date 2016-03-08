@@ -144,10 +144,10 @@ function iewp_smtp_register()
 	 * Create the settings section for this group of settings
 	 */
 	add_settings_section(
-		'iewp-smtp', // id
-		'SMTP Options', // title
-		'iewp_smtp_section', // callback
-		'iewp_smtp' // page
+		'iewp-smtp-options', // id
+		'', // title
+		'iewp_smtp_options', // callback
+		'iewp_smtp_options' // page
 		);
 	
 	/**
@@ -155,50 +155,129 @@ function iewp_smtp_register()
 	 */
 	add_settings_field(
 		'iewp-smtp-host', // id
-		'Twitter Account', // title/label
+		'Hostname', // title/label
 		'iewp_smtp_host', // callback
-		'iewp_smtp', // page
-		'iewp-smtp' // settings section 
+		'iewp_smtp_options', // page
+		'iewp-smtp-options' // settings section 
 		);
 
 	add_settings_field(
 		'iewp-smtp-port', // id
-		'Enable Twitter Cards', // title/label
+		'Port Number', // title/label
 		'iewp_smtp_port', // callback
-		'iewp_smtp', // page
-		'iewp-smtp' // settings section 
+		'iewp_smtp_options', // page
+		'iewp-smtp-options' // settings section 
 		);
 
 	add_settings_field(
 		'iewp-smtp-username', // id
-		'Enable Open Graph', // title/label
+		'Username', // title/label
 		'iewp_smtp_username', // callback
-		'iewp_smtp', // page
-		'iewp-smtp' // settings section 
+		'iewp_smtp_options', // page
+		'iewp-smtp-options' // settings section 
 		);
 
 	add_settings_field(
 		'iewp-smtp-password', // id
-		'Default Open Graph Image', // title/label
+		'Password', // title/label
 		'iewp_smtp_password', // callback
-		'iewp_smtp', // page
-		'iewp-smtp' // settings section 
+		'iewp_smtp_options', // page
+		'iewp-smtp-options' // settings section 
 		);
 
 	add_settings_field(
 		'iewp-smtp-from-email', // id
-		'Default Open Graph Image', // title/label
+		'From email', // title/label
 		'iewp_smtp_from_email', // callback
-		'iewp_smtp', // page
-		'iewp-smtp' // settings section 
+		'iewp_smtp_options', // page
+		'iewp-smtp-options' // settings section 
 		);
 
 	add_settings_field(
 		'iewp-smtp-from-name', // id
-		'Default Open Graph Image', // title/label
+		'From name', // title/label
 		'iewp_smtp_from_name', // callback
-		'iewp_smtp', // page
-		'iewp-smtp' // settings section 
+		'iewp_smtp_options', // page
+		'iewp-smtp-options' // settings section 
 		);
+}
 
+/**
+ * Produce the form elements/input fields
+ */
+function iewp_smtp_host()
+{
+	$setting = get_option( 'iewp_smtp_host' );
+	echo '<input type="text" class="regular-text" name="iewp_smtp_host" value="'.$setting.'" placeholder="mail.example.com">';
+	echo '<p class="description">Hostname of the SMTP server.</p>';
+}
+
+function iewp_smtp_port()
+{
+	$setting = get_option( 'iewp_smtp_port' );
+	echo '<input type="text" class="regular-text" name="iewp_smtp_port" value="'.$setting.'" placeholder="587">';
+	echo '<p class="description">SMTP port no.</p>';
+}
+
+function iewp_smtp_username()
+{
+	$setting = get_option( 'iewp_smtp_username' );
+	echo '<input type="text" class="regular-text" name="iewp_smtp_username" value="'.$setting.'" placeholder="user@example.com">';
+	echo '<p class="description">SMTP username i.e. user@example.com.</p>';
+}
+
+function iewp_smtp_password()
+{
+	$setting = get_option( 'iewp_smtp_password' );
+	echo '<input type="text" class="regular-text" name="iewp_smtp_password" value="'.$setting.'" placeholder="password">';
+	echo '<p class="description">SMTP password.</p>';
+}
+
+function iewp_smtp_from_email()
+{
+	$setting = get_option( 'iewp_smtp_from_email' );
+	echo '<input type="text" class="regular-text" name="iewp_smtp_from_email" value="'.$setting.'" placeholder="user@example.com">';
+	echo '<p class="description">Emails sent from address.</p>';
+}
+
+function iewp_smtp_from_name()
+{
+	$setting = get_option( 'iewp_smtp_from_name' );
+	echo '<input type="text" class="regular-text" name="iewp_smtp_from_name" value="'.$setting.'" placeholder="Example Ltd">';
+	echo '<p class="description">Emails sent from name.</p>';
+}
+
+/**
+ * Call back function for settings section. Do nothing.
+ */
+function iewp_smtp_options()
+{
+	return;
+}
+
+/**
+ * iewp_google_analytics callback function.
+ */
+function iewp_smtp_callback()
+{
+	?>
+	
+		<div class="wrap">
+			<h1>SMTP Settings</h1>
+
+			<p>Enter your SMTP credentials below to enable.</p>
+
+			<hr>
+			
+			<form method="POST" action="options.php">
+		
+				<?php settings_fields( 'iewp_smtp_group' ); ?>
+				<?php do_settings_sections( 'iewp_smtp_options' ); ?>
+				<?php submit_button(); ?>
+
+			</form>
+
+		</div>
+
+	<?php
 }
