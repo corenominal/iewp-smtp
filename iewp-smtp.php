@@ -35,7 +35,7 @@ function iewp_configure_smtp( $phpmailer )
 		get_option( 'iewp_smtp_username' ) != '' && 
 		get_option( 'iewp_smtp_password' ) != '' && 
 		get_option( 'iewp_smtp_from_email' ) != '' && 
-		get_option( 'iewp_smtp_from_name' ) != '' &&
+		get_option( 'iewp_smtp_from_name' ) != ''
 		)
 	{
 		$phpmailer->isSMTP();
