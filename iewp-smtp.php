@@ -82,3 +82,23 @@ function iewp_configure_smtp( $phpmailer )
 	}
 }
 add_action( 'phpmailer_init', 'iewp_configure_smtp'  );
+
+/**
+ * Add submenu item to the default WordPress "Settings" menu
+ */
+function iewp_smtp()
+{
+	add_submenu_page( 
+		'options-general.php', // parent slug to attach to
+		'SMTP', // page title
+		'SMTP', // menu title
+		'manage_options', // capability
+		'options-iewp-smtp', // slug
+		'iewp_smtp_callback' // callback function
+		);
+
+	// Activate custom settings
+	add_action( 'admin_init', 'iewp_smtp_register' );
+}
+add_action( 'admin_menu', 'iewp_smtp' );
+
