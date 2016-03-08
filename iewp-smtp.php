@@ -102,3 +102,103 @@ function iewp_smtp()
 }
 add_action( 'admin_menu', 'iewp_smtp' );
 
+/**
+ * Register custom settings
+ */ 
+function iewp_smtp_register()
+{
+	/**
+	 * Register the settings fields
+	 */
+	register_setting(
+		'iewp_smtp_group', // option group
+		'iewp_smtp_host' // option name
+		);
+
+	register_setting(
+		'iewp_smtp_group', // option group
+		'iewp_smtp_port' // option name
+		);
+
+	register_setting(
+		'iewp_smtp_group', // option group
+		'iewp_smtp_username' // option name
+		);
+
+	register_setting(
+		'iewp_smtp_group', // option group
+		'iewp_smtp_password' // option name
+		);
+
+	register_setting(
+		'iewp_smtp_group', // option group
+		'iewp_smtp_from_email' // option name
+		);
+
+	register_setting(
+		'iewp_smtp_group', // option group
+		'iewp_smtp_from_name' // option name
+		);
+	
+	/**
+	 * Create the settings section for this group of settings
+	 */
+	add_settings_section(
+		'iewp-smtp', // id
+		'SMTP Options', // title
+		'iewp_smtp_section', // callback
+		'iewp_smtp' // page
+		);
+	
+	/**
+	 * Add the settings fields
+	 */
+	add_settings_field(
+		'iewp-smtp-host', // id
+		'Twitter Account', // title/label
+		'iewp_smtp_host', // callback
+		'iewp_smtp', // page
+		'iewp-smtp' // settings section 
+		);
+
+	add_settings_field(
+		'iewp-smtp-port', // id
+		'Enable Twitter Cards', // title/label
+		'iewp_smtp_port', // callback
+		'iewp_smtp', // page
+		'iewp-smtp' // settings section 
+		);
+
+	add_settings_field(
+		'iewp-smtp-username', // id
+		'Enable Open Graph', // title/label
+		'iewp_smtp_username', // callback
+		'iewp_smtp', // page
+		'iewp-smtp' // settings section 
+		);
+
+	add_settings_field(
+		'iewp-smtp-password', // id
+		'Default Open Graph Image', // title/label
+		'iewp_smtp_password', // callback
+		'iewp_smtp', // page
+		'iewp-smtp' // settings section 
+		);
+
+	add_settings_field(
+		'iewp-smtp-from-email', // id
+		'Default Open Graph Image', // title/label
+		'iewp_smtp_from_email', // callback
+		'iewp_smtp', // page
+		'iewp-smtp' // settings section 
+		);
+
+	add_settings_field(
+		'iewp-smtp-from-name', // id
+		'Default Open Graph Image', // title/label
+		'iewp_smtp_from_name', // callback
+		'iewp_smtp', // page
+		'iewp-smtp' // settings section 
+		);
+
+}
