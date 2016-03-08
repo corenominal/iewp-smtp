@@ -23,6 +23,25 @@ function iewp_smtp_activate()
 register_activation_hook( __FILE__, 'iewp_smtp_activate' );
 
 /**
+ * Plugin settings link
+ */
+function iewp_smtp_action_links( $actions, $plugin_file ) 
+{
+	static $plugin;
+
+	if (!isset($plugin))
+		$plugin = plugin_basename(__FILE__);
+	if ($plugin == $plugin_file)
+	{
+		$settings = array('settings' => '<a href="options-general.php?page=options-iewp-smtp">' . __('Settings', 'General') . '</a>');
+	
+		$actions = array_merge($settings, $actions);	
+	}
+	return $actions;
+}
+add_filter( 'plugin_action_links', 'iewp_smtp_action_links', 10, 5 );
+
+/**
  * Configure the PHP Mailer
  */
 function iewp_configure_smtp( $phpmailer )
