@@ -60,6 +60,7 @@ function iewp_configure_smtp( $phpmailer )
 		$phpmailer->isSMTP();
 		$phpmailer->Host = get_option( 'iewp_smtp_host' );
 		$phpmailer->SMTPAuth = true;
+		$phpmailer->SMTPSecure = 'tls';
 		$phpmailer->Username = get_option( 'iewp_smtp_username' );
 		$phpmailer->Password = get_option( 'iewp_smtp_password' );
 		$phpmailer->Port = 587;
@@ -82,6 +83,14 @@ function iewp_configure_smtp( $phpmailer )
 	}
 }
 add_action( 'phpmailer_init', 'iewp_configure_smtp'  );
+
+/**
+ * Enable debugging of SMTP
+ */
+function iewp_configure_smtp_debug( $phpmailer )
+{
+	$phpmailer->SMTPDebug = 3; 
+}
 
 /**
  * Add submenu item to the default WordPress "Settings" menu
@@ -256,12 +265,45 @@ function iewp_smtp_options()
 }
 
 /**
+ * Enqueue additional JavaScript
+ */
+function iewp_smtp_enqueue_scripts( $hook )
+{
+	if( 'settings_page_options-iewp-smtp' != $hook )
+	{
+		return;
+	}
+	wp_register_script( 'iewp_smtp_js', plugin_dir_url( __FILE__ ) . 'assets/iewp_smtp.js', array('jquery'), '0.0.1', true );
+	wp_enqueue_script( 'iewp_smtp_js' );
+
+	wp_enqueue_media();
+}
+add_action( 'admin_enqueue_scripts', 'iewp_smtp_enqueue_scripts' );
+
+/**
  * iewp_google_analytics callback function.
  */
 function iewp_smtp_callback()
 {
 	?>
 	
+		<?php
+			$data = $_REQUEST;
+			if( isset( $data['email'] ) )
+			{
+				echo '<h1>Test Email Debug</h1>';
+				echo '<hr>';
+				echo '<pre><code>';
+				add_action( 'phpmailer_init', 'iewp_configure_smtp_debug' );
+				wp_mail( $data['email'],
+						 'IEWP SMTP Test Email',
+						 "This is a test message, there is nothing to see here, please move along.\n\n" . 
+						 "--\nIEWP SMTP Test Email\nhttps://github.com/corenominal/iewp-smtp"
+					);
+				echo '</code></pre>';
+				echo '<hr>';
+			}
+		?>
 		<div class="wrap">
 			<h1>SMTP Settings</h1>
 
@@ -275,6 +317,35 @@ function iewp_smtp_callback()
 				<?php do_settings_sections( 'iewp_smtp_options' ); ?>
 				<?php submit_button(); ?>
 
+			</form>
+
+			<hr>
+
+			<h1>Send Test Email</h1>
+			<form id="email-test" method="GET" action="<?php echo site_url( 'wp-admin/options-general.php' ); ?>">
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th scope="row">
+							Recipient
+						</th>
+						<td>
+							<?php
+							$email = '';
+							if( isset($data['email']) )
+							{
+								$email = $data['email'];
+							}
+							?>
+							<input type="text" class="regular-text" id="recipient-email" name="email" value="<?php echo $email ?>" placeholder="test@example.com">
+							<p class="description">Email address to send test to.</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="submit">
+				<input type="hidden" name="page" value="options-iewp-smtp">
+				<input type="submit" value="Send Test Email" class="button " id="test-email-submit" name="submit"></p>
 			</form>
 
 		</div>
