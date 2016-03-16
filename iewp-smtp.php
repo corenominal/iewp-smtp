@@ -238,7 +238,7 @@ function iewp_smtp_username()
 function iewp_smtp_password()
 {
 	$setting = get_option( 'iewp_smtp_password' );
-	echo '<input type="text" class="regular-text" name="iewp_smtp_password" value="'.$setting.'" placeholder="password">';
+	echo '<input type="password" class="regular-text" name="iewp_smtp_password" value="'.$setting.'" placeholder="password">';
 	echo '<p class="description">SMTP password.</p>';
 }
 
