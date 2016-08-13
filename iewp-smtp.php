@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'WPINC' ) ) { die('Direct access prohibited!'); }
 /**
  * Plugin Name: IEWP SMTP
  * Plugin URI: https://github.com/corenominal/iewp-smtp
@@ -25,7 +26,7 @@ register_activation_hook( __FILE__, 'iewp_smtp_activate' );
 /**
  * Plugin settings link
  */
-function iewp_smtp_action_links( $actions, $plugin_file ) 
+function iewp_smtp_action_links( $actions, $plugin_file )
 {
 	static $plugin;
 
@@ -34,8 +35,8 @@ function iewp_smtp_action_links( $actions, $plugin_file )
 	if ($plugin == $plugin_file)
 	{
 		$settings = array('settings' => '<a href="options-general.php?page=options-iewp-smtp">' . __('Settings', 'General') . '</a>');
-	
-		$actions = array_merge($settings, $actions);	
+
+		$actions = array_merge($settings, $actions);
 	}
 	return $actions;
 }
@@ -49,11 +50,11 @@ function iewp_configure_smtp( $phpmailer )
 	/**
 	 * Test we have values
 	 */
-	if( get_option( 'iewp_smtp_host' ) != '' && 
-		get_option( 'iewp_smtp_port' ) != '' && 
-		get_option( 'iewp_smtp_username' ) != '' && 
-		get_option( 'iewp_smtp_password' ) != '' && 
-		get_option( 'iewp_smtp_from_email' ) != '' && 
+	if( get_option( 'iewp_smtp_host' ) != '' &&
+		get_option( 'iewp_smtp_port' ) != '' &&
+		get_option( 'iewp_smtp_username' ) != '' &&
+		get_option( 'iewp_smtp_password' ) != '' &&
+		get_option( 'iewp_smtp_from_email' ) != '' &&
 		get_option( 'iewp_smtp_from_name' ) != ''
 		)
 	{
@@ -89,7 +90,7 @@ add_action( 'phpmailer_init', 'iewp_configure_smtp'  );
  */
 function iewp_configure_smtp_debug( $phpmailer )
 {
-	$phpmailer->SMTPDebug = 3; 
+	$phpmailer->SMTPDebug = 3;
 }
 
 /**
@@ -97,7 +98,7 @@ function iewp_configure_smtp_debug( $phpmailer )
  */
 function iewp_smtp()
 {
-	add_submenu_page( 
+	add_submenu_page(
 		'options-general.php', // parent slug to attach to
 		'SMTP', // page title
 		'SMTP', // menu title
@@ -113,7 +114,7 @@ add_action( 'admin_menu', 'iewp_smtp' );
 
 /**
  * Register custom settings
- */ 
+ */
 function iewp_smtp_register()
 {
 	/**
@@ -148,7 +149,7 @@ function iewp_smtp_register()
 		'iewp_smtp_group', // option group
 		'iewp_smtp_from_name' // option name
 		);
-	
+
 	/**
 	 * Create the settings section for this group of settings
 	 */
@@ -158,7 +159,7 @@ function iewp_smtp_register()
 		'iewp_smtp_options', // callback
 		'iewp_smtp_options' // page
 		);
-	
+
 	/**
 	 * Add the settings fields
 	 */
@@ -167,7 +168,7 @@ function iewp_smtp_register()
 		'Hostname', // title/label
 		'iewp_smtp_host', // callback
 		'iewp_smtp_options', // page
-		'iewp-smtp-options' // settings section 
+		'iewp-smtp-options' // settings section
 		);
 
 	add_settings_field(
@@ -175,7 +176,7 @@ function iewp_smtp_register()
 		'Port Number', // title/label
 		'iewp_smtp_port', // callback
 		'iewp_smtp_options', // page
-		'iewp-smtp-options' // settings section 
+		'iewp-smtp-options' // settings section
 		);
 
 	add_settings_field(
@@ -183,7 +184,7 @@ function iewp_smtp_register()
 		'Username', // title/label
 		'iewp_smtp_username', // callback
 		'iewp_smtp_options', // page
-		'iewp-smtp-options' // settings section 
+		'iewp-smtp-options' // settings section
 		);
 
 	add_settings_field(
@@ -191,7 +192,7 @@ function iewp_smtp_register()
 		'Password', // title/label
 		'iewp_smtp_password', // callback
 		'iewp_smtp_options', // page
-		'iewp-smtp-options' // settings section 
+		'iewp-smtp-options' // settings section
 		);
 
 	add_settings_field(
@@ -199,7 +200,7 @@ function iewp_smtp_register()
 		'From email', // title/label
 		'iewp_smtp_from_email', // callback
 		'iewp_smtp_options', // page
-		'iewp-smtp-options' // settings section 
+		'iewp-smtp-options' // settings section
 		);
 
 	add_settings_field(
@@ -207,7 +208,7 @@ function iewp_smtp_register()
 		'From name', // title/label
 		'iewp_smtp_from_name', // callback
 		'iewp_smtp_options', // page
-		'iewp-smtp-options' // settings section 
+		'iewp-smtp-options' // settings section
 		);
 }
 
@@ -286,7 +287,7 @@ add_action( 'admin_enqueue_scripts', 'iewp_smtp_enqueue_scripts' );
 function iewp_smtp_callback()
 {
 	?>
-	
+
 		<?php
 			$data = $_REQUEST;
 			if( isset( $data['email'] ) )
@@ -297,7 +298,7 @@ function iewp_smtp_callback()
 				add_action( 'phpmailer_init', 'iewp_configure_smtp_debug' );
 				wp_mail( $data['email'],
 						 'IEWP SMTP Test Email',
-						 "This is a test message, there is nothing to see here, please move along.\n\n" . 
+						 "This is a test message, there is nothing to see here, please move along.\n\n" .
 						 "--\nIEWP SMTP Test Email\nhttps://github.com/corenominal/iewp-smtp"
 					);
 				echo '</code></pre>';
@@ -310,9 +311,9 @@ function iewp_smtp_callback()
 			<p>Enter your SMTP credentials below to enable.</p>
 
 			<hr>
-			
+
 			<form method="POST" action="options.php">
-		
+
 				<?php settings_fields( 'iewp_smtp_group' ); ?>
 				<?php do_settings_sections( 'iewp_smtp_options' ); ?>
 				<?php submit_button(); ?>
